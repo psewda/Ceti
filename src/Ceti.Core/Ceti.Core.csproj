@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C17C53D7-B91B-4D74-8BC0-4D533B7E6F74}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Ceti.Core</RootNamespace>
+    <AssemblyName>Ceti.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CetiAgentSelector.cs" />
+    <Compile Include="CetiBaseObject.cs" />
+    <Compile Include="CetiComponent.cs" />
+    <Compile Include="CetiAgentInfo.cs" />
+    <Compile Include="CetiAgentType.cs" />
+    <Compile Include="CetiBaseObjectInfo.cs" />
+    <Compile Include="CetiComponentInfo.cs" />
+    <Compile Include="CetiDriverInfo.cs" />
+    <Compile Include="ServiceProviders\CetiExecutionContext.cs" />
+    <Compile Include="ServiceProviders\CetiExecutionStage.cs" />
+    <Compile Include="ServiceProviders\CetiInterceptionContext.cs" />
+    <Compile Include="ServiceProviders\CetiInterceptionService.cs" />
+    <Compile Include="ServiceProviders\CetiInterceptionType.cs" />
+    <Compile Include="CetiTaskInfo.cs" />
+    <Compile Include="CetiDriver.cs" />
+    <Compile Include="CetiData.cs" />
+    <Compile Include="CetiWorkflowInfo.cs" />
+    <Compile Include="CetiEntryPointAttribute.cs" />
+    <Compile Include="Support\CetiGlobalDataCollection.cs" />
+    <Compile Include="CetiInputData.cs" />
+    <Compile Include="CetiOutputData.cs" />
+    <Compile Include="Configuration\CetiBaseConfigurationElement.cs" />
+    <Compile Include="Configuration\CetiInterceptionServiceProviderElementCollection.cs" />
+    <Compile Include="Configuration\CetiInterceptionServiceProviderElement.cs" />
+    <Compile Include="Configuration\CetiConfigurationReader.cs" />
+    <Compile Include="Configuration\CetiConfigurationSection.cs" />
+    <Compile Include="Configuration\CetiDataServiceProviderElement.cs" />
+    <Compile Include="Configuration\CetiDataServiceProviderElementCollection.cs" />
+    <Compile Include="Configuration\CetiExecutionServiceProviderElement.cs" />
+    <Compile Include="Configuration\CetiExecutionServiceProviderElementCollection.cs" />
+    <Compile Include="Configuration\CetiServiceProvidersElement.cs" />
+    <Compile Include="Configuration\CetiGlobalDataElement.cs" />
+    <Compile Include="Configuration\CetiGlobalDataElementCollection.cs" />
+    <Compile Include="Exceptions\CetiException.cs" />
+    <Compile Include="Runners\CetiActivityRunner.cs" />
+    <Compile Include="Runners\CetiRunnerInfo.cs" />
+    <Compile Include="CetiServiceProviderInfo.cs" />
+    <Compile Include="CetiServiceProviderRepository.cs" />
+    <Compile Include="CetiTaskContainer.cs" />
+    <Compile Include="CetiWorkflow.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Runners\CetiComponentRunner.cs" />
+    <Compile Include="Runners\CetiComponentRunnerInfo.cs" />
+    <Compile Include="Runners\CetiRunner.cs" />
+    <Compile Include="Runners\CetiTaskRunner.cs" />
+    <Compile Include="Runners\CetiTaskRunnerInfo.cs" />
+    <Compile Include="Runners\CetiWorkflowRunner.cs" />
+    <Compile Include="ServiceProviders\ICetiDataService.cs" />
+    <Compile Include="ServiceProviders\ICetiInterceptionService.cs" />
+    <Compile Include="ServiceProviders\ICetiActivityService.cs" />
+    <Compile Include="ServiceProviders\ICetiService.cs" />
+    <Compile Include="ServiceProviders\ICetiExecutionService.cs" />
+    <Compile Include="Support\CetiSupportExtensions.cs" />
+    <Compile Include="Support\CetiDictionary.cs" />
+    <Compile Include="Support\ICetiCloneable.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

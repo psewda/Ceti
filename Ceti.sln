@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ceti.Core", "src\Ceti.Core\Ceti.Core.csproj", "{C17C53D7-B91B-4D74-8BC0-4D533B7E6F74}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ceti.Core.Support", "src\Ceti.Core.Support\Ceti.Core.Support.csproj", "{6887F846-3F39-4ABC-9458-99B2C0852057}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ceti.Core.Test", "src\Ceti.Core.Test\Ceti.Core.Test.csproj", "{311D0838-B18B-4DBD-BF07-4F91E125B54B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C17C53D7-B91B-4D74-8BC0-4D533B7E6F74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C17C53D7-B91B-4D74-8BC0-4D533B7E6F74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C17C53D7-B91B-4D74-8BC0-4D533B7E6F74}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C17C53D7-B91B-4D74-8BC0-4D533B7E6F74}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6887F846-3F39-4ABC-9458-99B2C0852057}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6887F846-3F39-4ABC-9458-99B2C0852057}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6887F846-3F39-4ABC-9458-99B2C0852057}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6887F846-3F39-4ABC-9458-99B2C0852057}.Release|Any CPU.Build.0 = Release|Any CPU
+		{311D0838-B18B-4DBD-BF07-4F91E125B54B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{311D0838-B18B-4DBD-BF07-4F91E125B54B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{311D0838-B18B-4DBD-BF07-4F91E125B54B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{311D0838-B18B-4DBD-BF07-4F91E125B54B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
