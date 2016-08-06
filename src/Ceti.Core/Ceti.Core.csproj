@@ -73,7 +73,7 @@
     <Compile Include="Runners\CetiRunnerInfo.cs" />
     <Compile Include="CetiServiceProviderInfo.cs" />
     <Compile Include="CetiServiceProviderRepository.cs" />
-    <Compile Include="CetiTaskContainer.cs" />
+    <Compile Include="CetiTaskRepository.cs" />
     <Compile Include="CetiWorkflow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Runners\CetiRunner.cs" />

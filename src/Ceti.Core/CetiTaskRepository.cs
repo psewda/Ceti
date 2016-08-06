@@ -8,7 +8,23 @@ using System.Threading.Tasks;
 
 namespace Ceti.Core
 {
-    public abstract class CetiTaskContainer<T> where T : CetiTaskContainer<T>, new()
+    public abstract class CetiTaskRepository
+    {
+        #region Protected Methods
+
+        /// <summary>
+        /// Gets the job instance of the specified type.
+        /// </summary>
+        /// <returns>The instance of job runner which is used to run the job.</returns>
+        protected CetiJobRunner GetJob<TJob>() where TJob : class, ICetiJobService, new()
+        {
+            return new CetiJobRunner(CetiDriver.LocalDriver, new TJob());
+        }
+
+        #endregion
+    }
+
+    public abstract class CetiTaskRepository<T> : CetiTaskRepository where T : CetiTaskRepository<T>, new()
     {
         #region Private Fields
 
@@ -29,9 +45,9 @@ namespace Ceti.Core
         /// <summary>
         /// Initializes the class without parameters.
         /// </summary>
-        static CetiTaskContainer()
+        static CetiTaskRepository()
         {
-            CetiTaskContainer<T>.instances = new Dictionary<Type, T>();
+            CetiTaskRepository<T>.instances = new Dictionary<Type, T>();
         }
 
         #endregion
@@ -54,19 +70,6 @@ namespace Ceti.Core
                 }
                 return instances[typeof(T)];
             }
-        }
-
-        #endregion
-
-        #region Protected Methods
-
-        /// <summary>
-        /// Gets the job instance of the specified type.
-        /// </summary>
-        /// <returns>The instance of job runner which is used to run the job.</returns>
-        protected CetiJobRunner GetJob<TJob>() where TJob : class, ICetiJobService, new()
-        {
-            return new CetiJobRunner(CetiDriver.LocalDriver, new TJob());
         }
 
         #endregion
