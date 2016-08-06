@@ -19,19 +19,19 @@ namespace Ceti.Core.ServiceProviders
         public CetiInterceptionContext(MethodInfo task, CetiInputData inputData)
         {
             this.Task = task;
-            this.Activity = null;
+            this.Job = null;
             this.InputData = inputData;
         }
 
         /// <summary>
         /// Initializes the class with the specified parameters.
         /// </summary>
-        /// <param name="activity">The activity type instance.</param>
+        /// <param name="job">The job type instance.</param>
         /// <param name="inputData">The input data instance.</param>
-        public CetiInterceptionContext(Type activity, CetiInputData inputData)
+        public CetiInterceptionContext(Type job, CetiInputData inputData)
         {
             this.Task = null;
-            this.Activity = activity;
+            this.Job = job;
             this.InputData = inputData;
         }
 
@@ -45,9 +45,9 @@ namespace Ceti.Core.ServiceProviders
         public MethodInfo Task { get; private set; }
 
         /// <summary>
-        /// Gets the activity type.
+        /// Gets the job type.
         /// </summary>
-        public Type Activity { get; private set; }
+        public Type Job { get; private set; }
 
         /// <summary>
         /// Gets the input data.

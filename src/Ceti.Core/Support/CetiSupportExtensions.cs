@@ -123,10 +123,10 @@ namespace Ceti.Core.Support
         /// Creates interception service queue from the specified service list.
         /// </summary>
         /// <param name="services">The interception service list.</param>
-        /// <param name="activity">The activity type instance.</param>
+        /// <param name="job">The job type instance.</param>
         /// <param name="inputData">The input data for interception.</param>
         /// <returns>The interception service queue.</returns>
-        public static Queue<CetiInterceptionService> CreateServiceQueue(this List<ICetiInterceptionService> services, Type activity, CetiInputData inputData)
+        public static Queue<CetiInterceptionService> CreateServiceQueue(this List<ICetiInterceptionService> services, Type job, CetiInputData inputData)
         {
             // Create interception service queue
             var queue = new Queue<CetiInterceptionService>();
@@ -136,9 +136,9 @@ namespace Ceti.Core.Support
             {
                 foreach (var service in services)
                 {
-                    if (service.InterceptionType == CetiInterceptionType.Activity)
+                    if (service.InterceptionType == CetiInterceptionType.Job)
                     {
-                        if (service.IsRequired(new CetiInterceptionContext(activity, inputData)))
+                        if (service.IsRequired(new CetiInterceptionContext(job, inputData)))
                         {
                             queue.Enqueue((CetiInterceptionService)service);
                         }

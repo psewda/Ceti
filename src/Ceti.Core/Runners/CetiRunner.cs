@@ -35,7 +35,7 @@ namespace Ceti.Core.Runners
         #region Public Methods
 
         /// <summary>
-        /// Runs the specified workflow/task/activity etc.
+        /// Runs the specified workflow/task/job etc.
         /// </summary>
         /// <param name="inputData">The data for the running object.</param>
         /// <returns>The result of the running object.</returns>

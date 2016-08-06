@@ -16,9 +16,9 @@ namespace Ceti.Core.ServiceProviders
         Task,
 
         /// <summary>
-        /// The activity type.
+        /// The job type.
         /// </summary>
-        Activity
+        Job
 
         #endregion
     }

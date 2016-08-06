@@ -27,7 +27,7 @@ namespace Ceti.Core.ServiceProviders
         bool IsRequired(CetiInterceptionContext context);
 
         /// <summary>
-        /// Intercepts the specified task/activity object.
+        /// Intercepts the specified task/job object.
         /// </summary>
         /// <param name="inputData">The data for the interception object.</param>
         /// <returns>The result of the interception object.</returns>

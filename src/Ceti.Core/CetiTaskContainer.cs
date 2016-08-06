@@ -61,12 +61,12 @@ namespace Ceti.Core
         #region Protected Methods
 
         /// <summary>
-        /// Gets the activity instance of the specified type.
+        /// Gets the job instance of the specified type.
         /// </summary>
-        /// <returns>The instance of activity runner which is used to run the activity.</returns>
-        protected CetiActivityRunner GetActivity<TActivity>() where TActivity : class, ICetiActivityService, new()
+        /// <returns>The instance of job runner which is used to run the job.</returns>
+        protected CetiJobRunner GetJob<TJob>() where TJob : class, ICetiJobService, new()
         {
-            return new CetiActivityRunner(CetiDriver.LocalDriver, new TActivity());
+            return new CetiJobRunner(CetiDriver.LocalDriver, new TJob());
         }
 
         #endregion

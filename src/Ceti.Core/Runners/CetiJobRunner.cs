@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace Ceti.Core.Runners
 {
-    public class CetiActivityRunner : CetiRunner
+    public class CetiJobRunner : CetiRunner
     {
         #region Private Fields
 
         /// <summary>
-        /// The activity service to run.
+        /// The job service to run.
         /// </summary>
-        private ICetiActivityService activityService;
+        private ICetiJobService jobService;
 
         #endregion
 
@@ -25,10 +25,10 @@ namespace Ceti.Core.Runners
         /// Initializes the class with the specified parameters.
         /// </summary>
         /// <param name="driver">The driver instance.</param>
-        /// <param name="activityService">The activity service to run.</param>
-        public CetiActivityRunner(CetiDriver driver, ICetiActivityService activityService) : base(driver)
+        /// <param name="jobService">The job service to run.</param>
+        public CetiJobRunner(CetiDriver driver, ICetiJobService jobService) : base(driver)
         {
-            this.activityService = activityService;
+            this.jobService = jobService;
         }
 
         #endregion
@@ -36,15 +36,15 @@ namespace Ceti.Core.Runners
         #region Public Methods
 
         /// <summary>
-        /// Runs the specified activity service.
+        /// Runs the specified job service.
         /// </summary>
-        /// <param name="inputData">The data for the running activity service.</param>
-        /// <returns>The result of the running activity service.</returns>
+        /// <param name="inputData">The data for the running job service.</param>
+        /// <returns>The result of the running job service.</returns>
         public override CetiOutputData Run(CetiInputData inputData)
         {
             // Get interception service queue
             var interceptionServiceInstances = this.Driver.ServiceProvider.InterceptionService.Instances;
-            var interceptionServiceQueue = interceptionServiceInstances.CreateServiceQueue(this.activityService.GetType(), inputData);
+            var interceptionServiceQueue = interceptionServiceInstances.CreateServiceQueue(this.jobService.GetType(), inputData);
 
             // Get interception service instance
             var interceptionService = interceptionServiceQueue.GetNextInterceptionService();
@@ -54,13 +54,13 @@ namespace Ceti.Core.Runners
             if(interceptionService != null)
             {
                 // Run interception service by calling the 'Intercept' override
-                interceptionService.SetQueue(interceptionServiceQueue, this.activityService);
+                interceptionService.SetQueue(interceptionServiceQueue, this.jobService);
                 outputData = interceptionService.Intercept(inputData);
             }
             else
             {
-                // Run original activity
-                outputData = this.activityService.Run(inputData);
+                // Run original job
+                outputData = this.jobService.Run(inputData);
             }
 
             // Return the output data

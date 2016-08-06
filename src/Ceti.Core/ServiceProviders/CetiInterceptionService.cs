@@ -17,9 +17,9 @@ namespace Ceti.Core.ServiceProviders
         private Queue<CetiInterceptionService> queue;
 
         /// <summary>
-        /// The activity service instance.
+        /// The job service instance.
         /// </summary>
-        private ICetiActivityService activityService;
+        private ICetiJobService jobService;
 
         /// <summary>
         /// The task delegate instance.
@@ -47,7 +47,7 @@ namespace Ceti.Core.ServiceProviders
         public abstract bool IsRequired(CetiInterceptionContext context);
 
         /// <summary>
-        /// Intercepts the specified task/activity object.
+        /// Intercepts the specified task/job object.
         /// </summary>
         /// <param name="inputData">The data for the interception object.</param>
         /// <returns>The result of the interception object.</returns>
@@ -66,8 +66,8 @@ namespace Ceti.Core.ServiceProviders
                         interceptionService.SetQueue(this.queue, this.task);
                         break;
 
-                    case CetiInterceptionType.Activity:
-                        interceptionService.SetQueue(this.queue, this.activityService);
+                    case CetiInterceptionType.Job:
+                        interceptionService.SetQueue(this.queue, this.jobService);
                         break;
                 }
 
@@ -76,10 +76,10 @@ namespace Ceti.Core.ServiceProviders
             }
             else
             {
-                // Invoke the task/activity
+                // Invoke the task/job
                 return this.InterceptionType == CetiInterceptionType.Task
                     ? this.task.Invoke(inputData)
-                    : this.activityService.Run(inputData);
+                    : this.jobService.Run(inputData);
             }
         }
 
@@ -95,7 +95,7 @@ namespace Ceti.Core.ServiceProviders
         internal void SetQueue(Queue<CetiInterceptionService> queue, Func<CetiInputData, CetiOutputData> task)
         {
             this.queue = queue;
-            this.activityService = null;
+            this.jobService = null;
             this.task = task;
         }
 
@@ -103,11 +103,11 @@ namespace Ceti.Core.ServiceProviders
         /// Sets the specified queue having interception service instances.
         /// </summary>
         /// <param name="queue">The queue having interception service instances.</param>
-        /// <param name="activity">The activity for interception.</param>
-        internal void SetQueue(Queue<CetiInterceptionService> queue, ICetiActivityService activity)
+        /// <param name="job">The job for interception.</param>
+        internal void SetQueue(Queue<CetiInterceptionService> queue, ICetiJobService job)
         {
             this.queue = queue;
-            this.activityService = activity;
+            this.jobService = job;
             this.task = null;
         }
 
