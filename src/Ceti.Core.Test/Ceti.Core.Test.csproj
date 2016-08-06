@@ -47,8 +47,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Components\EarthComponent.cs" />
-    <Compile Include="Components\MarsComponent.cs" />
     <Compile Include="Entities\Planet.cs" />
     <Compile Include="Entities\SolarSystemInput.cs" />
     <Compile Include="Entities\SolarSystemOutput.cs" />

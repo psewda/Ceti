@@ -70,16 +70,6 @@ namespace Ceti.Core
         }
 
         /// <summary>
-        /// Adds the specified component in the driver.
-        /// </summary>
-        /// <param name="component">The component to run.</param>
-        /// <returns>The component runner to run the component.</returns>
-        public CetiComponentRunner Component(CetiComponent component)
-        {
-            return new CetiComponentRunner(this, component);
-        }
-
-        /// <summary>
         /// Adds the specified workflow in the driver.
         /// </summary>
         /// <param name="workflow">The workflow to run.</param>

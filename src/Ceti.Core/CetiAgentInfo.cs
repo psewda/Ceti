@@ -14,12 +14,10 @@ namespace Ceti.Core
         /// <summary>
         /// Initializes the class with specified parameters.
         /// </summary>
-        /// <param name="type">The agent type.</param>
         /// <param name="method">The  agent method.</param>
         /// <param name="isEntryPoint">The boolean flag for entry point agent.</param>
-        public CetiAgentInfo(CetiAgentType type, MethodInfo method, bool isEntryPoint = false)
+        public CetiAgentInfo(MethodInfo method, bool isEntryPoint = false)
         {
-            this.Type = type;
             this.Method = method;
             this.IsEntryPoint = isEntryPoint;
         }
@@ -27,11 +25,6 @@ namespace Ceti.Core
         #endregion
 
         #region Public Properties
-
-        /// <summary>
-        /// Gets the agent type.
-        /// </summary>
-        public CetiAgentType Type { get; private set; }
 
         /// <summary>
         /// Gets the agent method.

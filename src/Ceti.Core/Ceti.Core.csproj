@@ -42,11 +42,8 @@
   <ItemGroup>
     <Compile Include="CetiAgentSelector.cs" />
     <Compile Include="CetiBaseObject.cs" />
-    <Compile Include="CetiComponent.cs" />
     <Compile Include="CetiAgentInfo.cs" />
-    <Compile Include="CetiAgentType.cs" />
     <Compile Include="CetiBaseObjectInfo.cs" />
-    <Compile Include="CetiComponentInfo.cs" />
     <Compile Include="CetiDriverInfo.cs" />
     <Compile Include="ServiceProviders\CetiExecutionContext.cs" />
     <Compile Include="ServiceProviders\CetiExecutionStage.cs" />
@@ -81,8 +78,6 @@
     <Compile Include="CetiTaskContainer.cs" />
     <Compile Include="CetiWorkflow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Runners\CetiComponentRunner.cs" />
-    <Compile Include="Runners\CetiComponentRunnerInfo.cs" />
     <Compile Include="Runners\CetiRunner.cs" />
     <Compile Include="Runners\CetiTaskRunner.cs" />
     <Compile Include="Runners\CetiTaskRunnerInfo.cs" />
@@ -94,7 +89,6 @@
     <Compile Include="ServiceProviders\ICetiExecutionService.cs" />
     <Compile Include="Support\CetiSupportExtensions.cs" />
     <Compile Include="Support\CetiDictionary.cs" />
-    <Compile Include="Support\ICetiCloneable.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

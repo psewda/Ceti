@@ -21,34 +21,14 @@ namespace Ceti.Core.ServiceProviders
         WorkflowEnd,
 
         /// <summary>
-        /// The component agent start.
+        /// The agent start.
         /// </summary>
-        ComponentAgentStart,
+        AgentStart,
 
         /// <summary>
-        /// The component agent end.
+        /// The agent end.
         /// </summary>
-        ComponentAgentEnd,
-
-        /// <summary>
-        /// The component start.
-        /// </summary>
-        ComponentStart,
-
-        /// <summary>
-        /// The component end.
-        /// </summary>
-        ComponentEnd,
-
-        /// <summary>
-        /// The task agent start.
-        /// </summary>
-        TaskAgentStart,
-
-        /// <summary>
-        /// The task agent end.
-        /// </summary>
-        TaskAgentEnd,
+        AgentEnd,
 
         /// <summary>
         /// The task start.

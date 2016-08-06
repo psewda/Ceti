@@ -22,19 +22,10 @@ namespace Ceti.Core
         /// <summary>
         /// Initializes the class with the specified parameters.
         /// </summary>
-        /// <param name="componentAgent">The component agent delegate.</param>
-        public CetiAgentSelector(Func<CetiComponentRunnerInfo, CetiAgentSelector> componentAgent)
-        {
-            this.NextAgent = (ri) => componentAgent((CetiComponentRunnerInfo)ri);
-        }
-
-        /// <summary>
-        /// Initializes the class with the specified parameters.
-        /// </summary>
         /// <param name="taskAgent">The task agent delegate.</param>
         public CetiAgentSelector(Func<CetiTaskRunnerInfo, CetiAgentSelector> taskAgent)
         {
-            this.NextAgent = (ri) => taskAgent((CetiTaskRunnerInfo)ri);
+            this.NextAgent = taskAgent;
         }
 
         #endregion
@@ -42,9 +33,9 @@ namespace Ceti.Core
         #region Publlic Properties
 
         /// <summary>
-        /// Gets next component/task agent.
+        /// Gets next task agent.
         /// </summary>
-        public Func<CetiRunnerInfo, CetiAgentSelector> NextAgent { get; private set; }
+        public Func<CetiTaskRunnerInfo, CetiAgentSelector> NextAgent { get; private set; }
 
         #endregion
     }

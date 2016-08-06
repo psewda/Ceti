@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Ceti.Core;
 using Ceti.Core.Support;
 using Ceti.Core.Runners;
-using Ceti.Core.Test.Components;
 using Ceti.Core.Test.Entities;
 
 
@@ -20,12 +19,12 @@ namespace Ceti.Core.Test.Workflows
         }
 
         [CetiEntryPoint]
-        public CetiAgentSelector ProcessEarthComponent(CetiComponentRunnerInfo runnerInfo)
+        public CetiAgentSelector ProcessEarthComponent(CetiTaskRunnerInfo runInfo)
         {
             return null;
         }
 
-        public CetiAgentSelector ProcessMarsComponent(CetiComponentRunnerInfo runnerInfo)
+        public CetiAgentSelector ProcessMarsComponent(CetiTaskRunnerInfo runInfo)
         {
             return null;
         }

@@ -32,19 +32,9 @@ namespace Ceti.Core.Support
         /// </summary>
         /// <param name="workflow">The workflow having agents.</param>
         /// <returns>The entry point agent delegate.</returns>
-        public static Func<CetiComponentRunnerInfo, CetiAgentSelector> GetEntryPointAgent(this CetiWorkflow workflow)
+        public static Func<CetiTaskRunnerInfo, CetiAgentSelector> GetEntryPointAgent(this CetiWorkflow workflow)
         {
-            return getEntryPointAgent<CetiComponentRunnerInfo>(workflow);
-        }
-
-        /// <summary>
-        /// Get the entry point agent from component.
-        /// </summary>
-        /// <param name="component">The component having agents.</param>
-        /// <returns>The entry point agent delegate.</returns>
-        public static Func<CetiTaskRunnerInfo, CetiAgentSelector> GetEntryPointAgent(this CetiComponent component)
-        {
-            return getEntryPointAgent<CetiTaskRunnerInfo>(component); 
+            return getEntryPointAgent<CetiTaskRunnerInfo>(workflow);
         }
 
         /// <summary>

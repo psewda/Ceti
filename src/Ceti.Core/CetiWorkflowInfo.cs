@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Ceti.Core
 {
-    public class CetiWorkflowInfo : CetiBaseObjectInfo, ICetiCloneable<CetiWorkflowInfo>
+    public class CetiWorkflowInfo : CetiBaseObjectInfo
     {
         #region Private Fields
 
@@ -101,36 +101,6 @@ namespace Ceti.Core
                 {
                     throw new CetiException("Invalid operation"); // TODO :: throw more specific exception
                 }
-            }
-        }
-
-        #endregion
-
-        #region Public Methods
-
-        /// <summary>
-        /// Creates a new object that is a copy of the current instance.
-        /// </summary>
-        /// <returns>The new object copied from the current instance.</returns>
-        CetiWorkflowInfo ICetiCloneable<CetiWorkflowInfo>.Clone()
-        {
-            return new CetiWorkflowInfo(this.workflow);
-        }
-
-        /// <summary>
-        /// Creates a new object that is a copy of the current instance.
-        /// </summary>
-        /// <param name="param">Any extra data which can be used for clonning the current instance.</param>
-        /// <returns>The new object copied from the current instance.</returns>
-        CetiWorkflowInfo ICetiCloneable<CetiWorkflowInfo>.Clone(object param)
-        {
-            if (param != null && param.GetType() == typeof(bool))
-            {
-                return new CetiWorkflowInfo(this.workflow, bool.Parse(param.ToString()));
-            }
-            else
-            {
-                return new CetiWorkflowInfo(this.workflow);
             }
         }
 

@@ -18,11 +18,6 @@ namespace Ceti.Core.ServiceProviders
         public CetiWorkflowInfo Workflow { get; internal set; }
         
         /// <summary>
-        /// Gets the context component.
-        /// </summary>
-        public CetiComponentInfo Component { get; internal set; }
-
-        /// <summary>
         /// Gets the context agent.
         /// </summary>
         public CetiAgentInfo Agent { get; internal set; }

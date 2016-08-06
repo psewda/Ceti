@@ -135,25 +135,25 @@ namespace Ceti.Core.Runners
         }
 
         /// <summary>
-        /// Invokes the specified component agent.
+        /// Invokes the specified agent.
         /// </summary>
         /// <param name="agent">The agent to be invoked.</param>
         /// <param name="isEntryPoint">The boolean flag for entry point agent.</param>
         /// <returns>The agent selector pointing to next agent.</returns>
-        private CetiAgentSelector invokeAgent(Func<CetiComponentRunnerInfo, CetiAgentSelector> agent, bool isEntryPoint)
+        private CetiAgentSelector invokeAgent(Func<CetiTaskRunnerInfo, CetiAgentSelector> agent, bool isEntryPoint)
         {
             // Create agent info instance
-            var agentInfo = new CetiAgentInfo(CetiAgentType.Component, agent.Method, isEntryPoint);
+            var agentInfo = new CetiAgentInfo(agent.Method, isEntryPoint);
 
-            // Process execution service providers on component agent start
-            this.setContext(this.Driver.ExecutionContext, agentInfo, CetiExecutionStage.ComponentAgentStart);
+            // Process execution service providers on agent start
+            this.setContext(this.Driver.ExecutionContext, agentInfo, CetiExecutionStage.AgentStart);
             this.ProcessExecutionService(this.Driver.ExecutionContext);
 
-            // Invoke the component agent
-            var selector = agent.Invoke(new CetiComponentRunnerInfo(this.Driver));
+            // Invoke the agent method
+            var selector = agent.Invoke(new CetiTaskRunnerInfo(this.Driver));
 
-            // Process execution service providers on component agent end
-            this.setContext(this.Driver.ExecutionContext, agentInfo, CetiExecutionStage.ComponentAgentEnd);
+            // Process execution service providers on agent end
+            this.setContext(this.Driver.ExecutionContext, agentInfo, CetiExecutionStage.AgentEnd);
             this.ProcessExecutionService(this.Driver.ExecutionContext);
 
             // Return the selector pointing to next agent
@@ -170,7 +170,6 @@ namespace Ceti.Core.Runners
         private CetiExecutionContext setContext(CetiExecutionContext context, CetiAgentInfo agent, CetiExecutionStage stage)
         {
             context.Workflow = context.Workflow ?? new CetiWorkflowInfo(this.workflow);
-            context.Component = null;
             context.Agent = agent;
             context.Task = null;
             context.Stage = stage;
