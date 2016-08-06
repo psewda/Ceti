@@ -34,7 +34,58 @@ namespace Ceti.Core.Support
         /// <returns>The entry point agent delegate.</returns>
         public static Func<CetiTaskRunnerInfo, CetiAgentSelector> GetEntryPointAgent(this CetiWorkflow workflow)
         {
-            return getEntryPointAgent<CetiTaskRunnerInfo>(workflow);
+            // Check the method is marked with entry point attribute
+            Func<MethodInfo, bool> isEntryPoint = (mi) =>
+            {
+                return mi.GetCustomAttribute(typeof(CetiEntryPointAttribute)) != null ? true : false;
+            };
+
+            // Check the method has valid signature
+            Func<MethodInfo, bool> isSignValid = (mi) =>
+            {
+                if (mi.GetParameters().Length == 1)
+                {
+                    if (mi.GetParameters()[0].ParameterType == typeof(CetiTaskRunnerInfo))
+                    {
+                        if (mi.ReturnType == typeof(CetiAgentSelector))
+                        {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            };
+
+            // Gets all entry point methods
+            var entryPointMethods = workflow.GetType()
+                .GetMethods(BindingFlags.Public | BindingFlags.Instance)
+                .Where(mi => isEntryPoint(mi))
+                .Where(mi => isSignValid(mi))
+                .ToList();
+
+            // Check there is only single entry point method
+            if (entryPointMethods.Count == 1)
+            {
+                // Create agent delegate from the method
+                var agentDelegate = entryPointMethods[0].CreateDelegate(typeof(Func<CetiTaskRunnerInfo, CetiAgentSelector>), workflow);
+                return (Func<CetiTaskRunnerInfo, CetiAgentSelector>)agentDelegate;
+            }
+            else
+            {
+                // Build exception message based on entry point method count
+                var message = string.Empty;
+                if (entryPointMethods.Count == 0)
+                {
+                    message = "The entrypoint agent not found.";
+                }
+                else
+                {
+                    message = "There are multiple entrypoint agents.";
+                }
+
+                // Throw exception if zero or multiple entry point methods
+                throw new CetiException(message); // TODO :: throw more specific exception
+            }
         }
 
         /// <summary>
@@ -113,71 +164,6 @@ namespace Ceti.Core.Support
             else
             {
                 return null;
-            }
-        }
-
-        #endregion
-
-        #region Private Methods
-
-        /// <summary>
-        /// Gets the entry point agent from the specified base object.
-        /// </summary>
-        /// <param name="baseObject">The base object having agents.</param>
-        /// <returns>The entry point agent delegate.</returns>
-        private static Func<T, CetiAgentSelector> getEntryPointAgent<T>(CetiBaseObject baseObject)
-        {
-            // Check the method is marked with entry point attribute
-            Func<MethodInfo, bool> isEntryPoint = (mi) =>
-            {
-                return mi.GetCustomAttribute(typeof(CetiEntryPointAttribute)) != null ? true : false;
-            };
-
-            // Check the method has valid signature
-            Func<MethodInfo, bool> isSignValid = (mi) =>
-            {
-                if (mi.GetParameters().Length == 1)
-                {
-                    if (mi.GetParameters()[0].ParameterType == typeof(T))
-                    {
-                        if (mi.ReturnType == typeof(CetiAgentSelector))
-                        {
-                            return true;
-                        }
-                    }
-                }
-                return false;
-            };
-
-            // Gets all entry point methods
-            var entryPointMethods = baseObject.GetType()
-                .GetMethods(BindingFlags.Public | BindingFlags.Instance)
-                .Where(mi => isEntryPoint(mi))
-                .Where(mi => isSignValid(mi))
-                .ToList();
-
-            // Check there is only single entry point method
-            if (entryPointMethods.Count == 1)
-            {
-                // Create agent delegate from the method
-                var agentDelegate = entryPointMethods[0].CreateDelegate(typeof(Func<T, CetiAgentSelector>), baseObject);
-                return (Func<T, CetiAgentSelector>)agentDelegate; 
-            }
-            else
-            {
-                // Build exception message based on entry point method count
-                var message = string.Empty;
-                if (entryPointMethods.Count == 0)
-                {
-                    message = "The entrypoint agent not found.";
-                }
-                else
-                {
-                    message = "There are multiple entrypoint agents.";
-                }
-
-                // Throw exception if zero or multiple entry point methods
-                throw new CetiException(message); // TODO :: throw more specific exception
             }
         }
 

@@ -41,9 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CetiAgentSelector.cs" />
-    <Compile Include="CetiBaseObject.cs" />
     <Compile Include="CetiAgentInfo.cs" />
-    <Compile Include="CetiBaseObjectInfo.cs" />
     <Compile Include="CetiDriverInfo.cs" />
     <Compile Include="ServiceProviders\CetiExecutionContext.cs" />
     <Compile Include="ServiceProviders\CetiExecutionStage.cs" />

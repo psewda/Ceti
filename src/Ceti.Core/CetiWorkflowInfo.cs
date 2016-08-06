@@ -1,5 +1,4 @@
-﻿using Ceti.Core.Exceptions;
-using Ceti.Core.Support;
+﻿using Ceti.Core.Support;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,42 +7,22 @@ using System.Threading.Tasks;
 
 namespace Ceti.Core
 {
-    public class CetiWorkflowInfo : CetiBaseObjectInfo
+    public class CetiWorkflowInfo
     {
-        #region Private Fields
-
-        /// <summary>
-        /// The workflow instance.
-        /// </summary>
-        private CetiWorkflow workflow;
-
-        /// <summary>
-        /// The data access flag.
-        /// </summary>
-        private bool isDataAccess;
-
-        #endregion
-
         #region Public Constructors
 
         /// <summary>
         /// Initializes the class with the specified parameters.
         /// </summary>
         /// <param name="workflow">The workflow instance.</param>
-        public CetiWorkflowInfo(CetiWorkflow workflow) : this(workflow, true)
+        public CetiWorkflowInfo(CetiWorkflow workflow)
         {
-            
-        }
-
-        /// <summary>
-        /// Initializes the class with the specified parameters.
-        /// </summary>
-        /// <param name="workflow">The workflow instance.</param>
-        /// <param name="isDataAccess">The boolean flag for data access.</param>
-        public CetiWorkflowInfo(CetiWorkflow workflow, bool isDataAccess) : base(workflow)
-        {
-            this.workflow = workflow;
-            this.isDataAccess = isDataAccess;
+            this.Id = workflow.Id;
+            this.Name = workflow.Name;
+            this.Driver = new CetiDriverInfo(workflow.Driver);
+            this.Runtime = workflow.Runtime;
+            this.InputData = workflow.InputData;
+            this.OutputData = workflow.OutputData;
         }
 
         #endregion
@@ -51,58 +30,34 @@ namespace Ceti.Core
         #region Public Properties
 
         /// <summary>
+        /// Gets the workflow id.
+        /// </summary>
+        public Guid Id { get; private set; }
+
+        /// <summary>
+        /// Gets the workflow name.
+        /// </summary>
+        public string Name { get; private set; }
+
+        /// <summary>
+        /// Gets the driver instance.
+        /// </summary>
+        public CetiDriverInfo Driver { get; private set; }
+
+        /// <summary>
         /// Gets the runtime data collection.
         /// </summary>
-        public override CetiDictionary<string, object> Runtime
-        {
-            get
-            {
-                if (this.isDataAccess)
-                {
-                    return base.Runtime;
-                }
-                else
-                {
-                    throw new CetiException("Invalid operation"); // TODO :: throw more specific exception
-                }
-            }
-        }
+        public CetiDictionary<string, object> Runtime { get; private set; }
 
         /// <summary>
         /// Gets the input data.
         /// </summary>
-        public override CetiInputData InputData
-        {
-            get
-            {
-                if(this.isDataAccess)
-                {
-                    return base.InputData;
-                }
-                else
-                {
-                    throw new CetiException("Invalid operation"); // TODO :: throw more specific exception
-                }
-            }
-        }
+        public CetiInputData InputData { get; private set; }
 
         /// <summary>
         /// Gets the output data.
         /// </summary>
-        public override CetiOutputData OutputData
-        {
-            get
-            {
-                if (this.isDataAccess)
-                {
-                    return base.OutputData;
-                }
-                else
-                {
-                    throw new CetiException("Invalid operation"); // TODO :: throw more specific exception
-                }
-            }
-        }
+        public CetiOutputData OutputData { get; private set; }
 
         #endregion
     }
