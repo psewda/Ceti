@@ -51,7 +51,7 @@ namespace Ceti.Core.Runners
 
             // Process execution service providers on task start
             this.setContext(this.Driver.ExecutionContext, createTaskInfo(null), CetiExecutionStage.TaskStart);
-            this.ProcessExecutionService(this.Driver.ExecutionContext);
+            this.InvokeOnExecution(this.Driver.ExecutionContext);
 
             // Get interception service queue
             var interceptionServiceInstances = this.Driver.ServiceProvider.InterceptionService.Instances;
@@ -76,7 +76,7 @@ namespace Ceti.Core.Runners
 
             // Process execution service providers on task end
             this.setContext(this.Driver.ExecutionContext, createTaskInfo(outputData), CetiExecutionStage.TaskEnd);
-            this.ProcessExecutionService(this.Driver.ExecutionContext);
+            this.InvokeOnExecution(this.Driver.ExecutionContext);
 
             // Return the output data
             return outputData;

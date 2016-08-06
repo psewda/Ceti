@@ -56,8 +56,8 @@ namespace Ceti.Core.Runners
                 var msg = "Unhandled exception occured while processing."; // TODO :: Add appropriate message
                 var exp2 = new CetiException(msg, exp);
 
-                // Process execution service providers on exception occurrence
-                this.ProcessExecutionService(exp2);
+                // Process execution service providers by invoking 'OnException' method
+                this.invokeOnException(exp2);
 
                 // Invoke the global exception handler
                 var status = false;
@@ -98,12 +98,12 @@ namespace Ceti.Core.Runners
             // Set input data for the workflow
             this.workflow.InputData = inputData;
 
-            // Process data service providers
-            this.ProcessDataService();
+            // Process data service providers by invoking 'LoadData' method
+            this.invokeLoadData();
 
             // Process execution service providers on workflow start
             this.setContext(this.Driver.ExecutionContext, null, CetiExecutionStage.WorkflowStart);
-            this.ProcessExecutionService(this.Driver.ExecutionContext);
+            this.InvokeOnExecution(this.Driver.ExecutionContext);
 
             // Initialize the workflow by calling 'Initialize' override
             this.workflow.Initialize();
@@ -128,7 +128,7 @@ namespace Ceti.Core.Runners
 
             // Process execution service providers on workflow end
             this.setContext(this.Driver.ExecutionContext, null, CetiExecutionStage.WorkflowEnd);
-            this.ProcessExecutionService(this.Driver.ExecutionContext);
+            this.InvokeOnExecution(this.Driver.ExecutionContext);
 
             // Return the output data
             return this.workflow.OutputData;
@@ -147,14 +147,14 @@ namespace Ceti.Core.Runners
 
             // Process execution service providers on agent start
             this.setContext(this.Driver.ExecutionContext, agentInfo, CetiExecutionStage.AgentStart);
-            this.ProcessExecutionService(this.Driver.ExecutionContext);
+            this.InvokeOnExecution(this.Driver.ExecutionContext);
 
             // Invoke the agent method
             var selector = agent.Invoke(new CetiTaskRunnerInfo(this.Driver));
 
             // Process execution service providers on agent end
             this.setContext(this.Driver.ExecutionContext, agentInfo, CetiExecutionStage.AgentEnd);
-            this.ProcessExecutionService(this.Driver.ExecutionContext);
+            this.InvokeOnExecution(this.Driver.ExecutionContext);
 
             // Return the selector pointing to next agent
             return selector;
@@ -174,6 +174,37 @@ namespace Ceti.Core.Runners
             context.Task = null;
             context.Stage = stage;
             return context;
+        }
+
+        /// <summary>
+        /// Invokes 'LoadData' method of all data service providers.
+        /// </summary>
+        private void invokeLoadData()
+        {
+            var dataServiceProviders = this.Driver.ServiceProvider.DataService.Instances;
+            if (dataServiceProviders != null && dataServiceProviders.Count > 0)
+            {
+                foreach (var dataServiceProvider in dataServiceProviders)
+                {
+                    this.Driver.SetGlobalData(dataServiceProvider.LoadData(this.Driver.GlobalData));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Invokes 'OnException' method of all execution service providers.
+        /// </summary>
+        /// <param name="exception">The exception instance.</param>
+        private void invokeOnException(CetiException exception)
+        {
+            var executionServiceProviders = this.Driver.ServiceProvider.ExecutionService.Instances;
+            if (executionServiceProviders != null && executionServiceProviders.Count > 0)
+            {
+                foreach (var executionServiceProvider in executionServiceProviders)
+                {
+                    executionServiceProvider.OnException(exception);
+                }
+            }
         }
 
         #endregion

@@ -46,25 +46,10 @@ namespace Ceti.Core.Runners
         #region Internal Protected Methods
 
         /// <summary>
-        /// Runs 'LoadData' method of all data service providers.
-        /// </summary>
-        internal protected void ProcessDataService()
-        {
-            var dataServiceProviders = this.Driver.ServiceProvider.DataService.Instances;
-            if (dataServiceProviders != null && dataServiceProviders.Count > 0)
-            {
-                foreach (var dataServiceProvider in dataServiceProviders)
-                {
-                    this.Driver.SetGlobalData(dataServiceProvider.LoadData(this.Driver.GlobalData));
-                }
-            }
-        }
-
-        /// <summary>
-        /// Runs 'OnExecution' method of all execution service providers.
+        /// Invokes 'OnExecution' method of all execution service providers.
         /// </summary>
         /// <param name="context">The execution context instance.</param>
-        internal protected void ProcessExecutionService(CetiExecutionContext context)
+        internal protected void InvokeOnExecution(CetiExecutionContext context)
         {
             var executionServiceProviders = this.Driver.ServiceProvider.ExecutionService.Instances;
             if (executionServiceProviders != null && executionServiceProviders.Count > 0)
@@ -72,22 +57,6 @@ namespace Ceti.Core.Runners
                 foreach (var executionServiceProvider in executionServiceProviders)
                 {
                     executionServiceProvider.OnExecution(context);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Runs 'OnException' method of all execution service providers.
-        /// </summary>
-        /// <param name="exception">The exception instance.</param>
-        internal protected void ProcessExecutionService(CetiException exception)
-        {
-            var executionServiceProviders = this.Driver.ServiceProvider.ExecutionService.Instances;
-            if (executionServiceProviders != null && executionServiceProviders.Count > 0)
-            {
-                foreach (var executionServiceProvider in executionServiceProviders)
-                {
-                    executionServiceProvider.OnException(exception);
                 }
             }
         }
