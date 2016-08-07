@@ -53,6 +53,8 @@
     <Compile Include="CetiData.cs" />
     <Compile Include="CetiWorkflowInfo.cs" />
     <Compile Include="CetiEntryPointAttribute.cs" />
+    <Compile Include="ServiceProviders\CetiJobInterceptionService.cs" />
+    <Compile Include="ServiceProviders\CetiTaskInterceptionService.cs" />
     <Compile Include="Support\CetiGlobalDataCollection.cs" />
     <Compile Include="CetiInputData.cs" />
     <Compile Include="CetiOutputData.cs" />

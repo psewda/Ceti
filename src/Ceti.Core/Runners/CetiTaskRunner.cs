@@ -49,23 +49,24 @@ namespace Ceti.Core.Runners
                 return new CetiTaskInfo(this.task.Method, inputData, op);
             };
 
-            // Process execution service providers on task start
+            // Invoke 'OnExecution' method of execution service providers on task start
             this.setContext(this.Driver.ExecutionContext, createTaskInfo(null), CetiExecutionStage.TaskStart);
             this.InvokeOnExecution(this.Driver.ExecutionContext);
 
-            // Get interception service queue
+            // Create interception service queue
             var interceptionServiceInstances = this.Driver.ServiceProvider.InterceptionService.Instances;
-            var interceptionServiceQueue = interceptionServiceInstances.CreateServiceQueue(this.task.Method, inputData);
+            var interceptionServiceQueue = this.createQueue(interceptionServiceInstances, inputData);
 
             // Get interception service instance
-            var interceptionService = interceptionServiceQueue.GetNextInterceptionService();
+            var interceptionService = interceptionServiceQueue.Dequeue<CetiTaskInterceptionService>();
 
             // Check interception service instance is available
             CetiOutputData outputData = null;
             if(interceptionService != null)
             {
                 // Run interception service by calling the 'Intercept' override
-                interceptionService.SetQueue(interceptionServiceQueue, this.task);
+                interceptionService.InterceptionServiceQueue = interceptionServiceQueue;
+                interceptionService.Task = this.task;
                 outputData = interceptionService.Intercept(inputData);
             }
             else
@@ -74,7 +75,7 @@ namespace Ceti.Core.Runners
                 outputData = this.task.Invoke(inputData);
             }
 
-            // Process execution service providers on task end
+            // Invoke 'OnExecution' method of execution service providers on task end
             this.setContext(this.Driver.ExecutionContext, createTaskInfo(outputData), CetiExecutionStage.TaskEnd);
             this.InvokeOnExecution(this.Driver.ExecutionContext);
 
@@ -95,11 +96,43 @@ namespace Ceti.Core.Runners
         /// <returns>The updated execution context instance.</returns>
         private CetiExecutionContext setContext(CetiExecutionContext context, CetiTaskInfo task, CetiExecutionStage stage)
         {
-            context.Agent = null;
             context.Task = task;
             context.Stage = stage;
             return context;
         }
+
+        /// <summary>
+        /// Creates interception service queue from the specified interception services.
+        /// </summary>
+        /// <param name="interceptionServices">The interception service instances.</param>
+        /// <param name="inputData">The input data for interception.</param>
+        /// <returns>The queue having interception service instances.</returns>
+        private Queue<CetiTaskInterceptionService> createQueue(List<ICetiInterceptionService> interceptionServices, CetiInputData inputData)
+        {
+            // Create interception service queue
+            var queue = new Queue<CetiTaskInterceptionService>();
+
+            // Add interception service instances in the queue
+            if (interceptionServices != null)
+            {
+                foreach (var interceptionService in interceptionServices)
+                {
+                    var taskInterceptionService = interceptionService as CetiTaskInterceptionService;
+                    if (taskInterceptionService != null)
+                    {
+                        var taskRepository = this.task.Method.DeclaringType.GetTypeInfo();
+                        if (taskInterceptionService.IsRequired(taskRepository, this.task.Method, inputData))
+                        {
+                            queue.Enqueue(taskInterceptionService);
+                        }
+                    }
+                }
+            }
+
+            // Return the queue
+            return queue;
+        }
+            
 
         #endregion
     }

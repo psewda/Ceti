@@ -56,7 +56,7 @@ namespace Ceti.Core.Runners
                 var msg = "Unhandled exception occured while processing."; // TODO :: Add appropriate message
                 var exp2 = new CetiException(msg, exp);
 
-                // Process execution service providers by invoking 'OnException' method
+                // Invoke 'OnException' method of execution service providers
                 this.invokeOnException(exp2);
 
                 // Invoke the global exception handler
@@ -98,10 +98,10 @@ namespace Ceti.Core.Runners
             // Set input data for the workflow
             this.workflow.InputData = inputData;
 
-            // Process data service providers by invoking 'LoadData' method
+            // Invoke 'LoadData' method of data service providers
             this.invokeLoadData();
 
-            // Process execution service providers on workflow start
+            // Invoke 'OnExecution' method of execution service providers on workflow start
             this.setContext(this.Driver.ExecutionContext, null, CetiExecutionStage.WorkflowStart);
             this.InvokeOnExecution(this.Driver.ExecutionContext);
 
@@ -112,7 +112,7 @@ namespace Ceti.Core.Runners
             this.workflow.IsValid = this.workflow.Validate();
 
             // Get the entry point agent
-            var agent = workflow.GetEntryPointAgent();
+            var agent = this.getEntryPointAgent(this.workflow);
 
             // Invoke the entry point agent
             var selector = this.invokeAgent(agent, true);
@@ -126,7 +126,7 @@ namespace Ceti.Core.Runners
             // Cleanup the workflow by calling 'Cleanup' override
             this.workflow.Cleanup();
 
-            // Process execution service providers on workflow end
+            // Invoke 'OnExecution' method of execution service providers on workflow end
             this.setContext(this.Driver.ExecutionContext, null, CetiExecutionStage.WorkflowEnd);
             this.InvokeOnExecution(this.Driver.ExecutionContext);
 
@@ -145,14 +145,14 @@ namespace Ceti.Core.Runners
             // Create agent info instance
             var agentInfo = new CetiAgentInfo(agent.Method, isEntryPoint);
 
-            // Process execution service providers on agent start
+            // Invoke 'OnExecution' method of execution service providers on agent start
             this.setContext(this.Driver.ExecutionContext, agentInfo, CetiExecutionStage.AgentStart);
             this.InvokeOnExecution(this.Driver.ExecutionContext);
 
             // Invoke the agent method
             var selector = agent.Invoke(new CetiTaskRunnerInfo(this.Driver));
 
-            // Process execution service providers on agent end
+            // Invoke 'OnExecution' method of execution service providers on agent end
             this.setContext(this.Driver.ExecutionContext, agentInfo, CetiExecutionStage.AgentEnd);
             this.InvokeOnExecution(this.Driver.ExecutionContext);
 
@@ -177,17 +177,63 @@ namespace Ceti.Core.Runners
         }
 
         /// <summary>
-        /// Invokes 'LoadData' method of all data service providers.
+        /// Get the entry point agent from the specified workflow.
         /// </summary>
-        private void invokeLoadData()
+        /// <param name="workflow">The workflow having agents.</param>
+        /// <returns>The entry point agent delegate.</returns>
+        private Func<CetiTaskRunnerInfo, CetiAgentSelector> getEntryPointAgent(CetiWorkflow workflow)
         {
-            var dataServiceProviders = this.Driver.ServiceProvider.DataService.Instances;
-            if (dataServiceProviders != null && dataServiceProviders.Count > 0)
+            // Check the method is marked with entry point attribute
+            Func<MethodInfo, bool> isEntryPoint = (mi) =>
             {
-                foreach (var dataServiceProvider in dataServiceProviders)
+                return mi.GetCustomAttribute(typeof(CetiEntryPointAttribute)) != null ? true : false;
+            };
+
+            // Check the method has valid signature
+            Func<MethodInfo, bool> isSignValid = (mi) =>
+            {
+                if (mi.GetParameters().Length == 1)
                 {
-                    this.Driver.SetGlobalData(dataServiceProvider.LoadData(this.Driver.GlobalData));
+                    if (mi.GetParameters()[0].ParameterType == typeof(CetiTaskRunnerInfo))
+                    {
+                        if (mi.ReturnType == typeof(CetiAgentSelector))
+                        {
+                            return true;
+                        }
+                    }
                 }
+                return false;
+            };
+
+            // Gets all entry point methods
+            var entryPointMethods = workflow.GetType()
+                .GetMethods(BindingFlags.Public | BindingFlags.Instance)
+                .Where(mi => isEntryPoint(mi))
+                .Where(mi => isSignValid(mi))
+                .ToList();
+
+            // Check there is only single entry point method
+            if (entryPointMethods.Count == 1)
+            {
+                // Create agent delegate from the method
+                var agentDelegate = entryPointMethods[0].CreateDelegate(typeof(Func<CetiTaskRunnerInfo, CetiAgentSelector>), workflow);
+                return (Func<CetiTaskRunnerInfo, CetiAgentSelector>)agentDelegate;
+            }
+            else
+            {
+                // Build exception message based on entry point method count
+                var message = string.Empty;
+                if (entryPointMethods.Count == 0)
+                {
+                    message = "The entrypoint agent not found.";
+                }
+                else
+                {
+                    message = "There are multiple entrypoint agents.";
+                }
+
+                // Throw exception if zero or multiple entry point methods
+                throw new CetiException(message); // TODO :: throw more specific exception
             }
         }
 
@@ -203,6 +249,21 @@ namespace Ceti.Core.Runners
                 foreach (var executionServiceProvider in executionServiceProviders)
                 {
                     executionServiceProvider.OnException(exception);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Invokes 'LoadData' method of all data service providers.
+        /// </summary>
+        private void invokeLoadData()
+        {
+            var dataServiceProviders = this.Driver.ServiceProvider.DataService.Instances;
+            if (dataServiceProviders != null && dataServiceProviders.Count > 0)
+            {
+                foreach (var dataServiceProvider in dataServiceProviders)
+                {
+                    this.Driver.SetGlobalData(dataServiceProvider.LoadData(this.Driver.GlobalData));
                 }
             }
         }
