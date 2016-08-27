@@ -9,14 +9,14 @@ using System.Reflection;
 
 namespace Ceti.Core.Runners
 {
-    public class CetiJobRunner : CetiRunner
+    public class CetiChannelRunner : CetiRunner
     {
         #region Private Fields
 
         /// <summary>
-        /// The job service to run.
+        /// The channel service to run.
         /// </summary>
-        private ICetiJobService jobService;
+        private ICetiChannelService channelService;
 
         #endregion
 
@@ -26,10 +26,10 @@ namespace Ceti.Core.Runners
         /// Initializes the class with the specified parameters.
         /// </summary>
         /// <param name="driver">The driver instance.</param>
-        /// <param name="jobService">The job service to run.</param>
-        public CetiJobRunner(CetiDriver driver, ICetiJobService jobService) : base(driver)
+        /// <param name="channelService">The channel service to run.</param>
+        public CetiChannelRunner(CetiDriver driver, ICetiChannelService channelService) : base(driver)
         {
-            this.jobService = jobService;
+            this.channelService = channelService;
         }
 
         #endregion
@@ -37,10 +37,10 @@ namespace Ceti.Core.Runners
         #region Public Methods
 
         /// <summary>
-        /// Runs the specified job service.
+        /// Runs the specified channel service.
         /// </summary>
-        /// <param name="inputData">The data for the running job service.</param>
-        /// <returns>The result of the running job service.</returns>
+        /// <param name="inputData">The data for the running channel service.</param>
+        /// <returns>The result of the running channel service.</returns>
         public override CetiOutputData Run(CetiInputData inputData)
         {
             // Create interception service queue
@@ -48,7 +48,7 @@ namespace Ceti.Core.Runners
             var interceptionServiceQueue = this.createQueue(interceptionServiceInstances, inputData);
 
             // Get interception service instance
-            var interceptionService = interceptionServiceQueue.Dequeue<CetiJobInterceptionService>();
+            var interceptionService = interceptionServiceQueue.Dequeue<CetiChannelInterceptionService>();
 
             // Check interception service instance is available
             CetiOutputData outputData = null;
@@ -56,13 +56,13 @@ namespace Ceti.Core.Runners
             {
                 // Run interception service by calling the 'Intercept' override
                 interceptionService.InterceptionServiceQueue = interceptionServiceQueue;
-                interceptionService.JobService = this.jobService;
+                interceptionService.ChannelService = this.channelService;
                 outputData = interceptionService.Intercept(inputData);
             }
             else
             {
-                // Run original job
-                outputData = this.jobService.Run(inputData);
+                // Run original channel
+                outputData = this.channelService.Run(inputData);
             }
 
             // Return the output data
@@ -79,22 +79,22 @@ namespace Ceti.Core.Runners
         /// <param name="serviceInstances">The interception service instances.</param>
         /// <param name="inputData">The input data for interception.</param>
         /// <returns>The queue having interception service instances.</returns>
-        private Queue<CetiJobInterceptionService> createQueue(List<ICetiInterceptionService> interceptionServices, CetiInputData inputData)
+        private Queue<CetiChannelInterceptionService> createQueue(List<ICetiInterceptionService> interceptionServices, CetiInputData inputData)
         {
             // Create interception service queue
-            var queue = new Queue<CetiJobInterceptionService>();
+            var queue = new Queue<CetiChannelInterceptionService>();
 
             // Add interception service instances in the queue
             if (interceptionServices != null)
             {
                 foreach (var interceptionService in interceptionServices)
                 {
-                    var jobInterceptionService = interceptionService as CetiJobInterceptionService;
-                    if (jobInterceptionService != null)
+                    var channelInterceptionService = interceptionService as CetiChannelInterceptionService;
+                    if (channelInterceptionService != null)
                     {
-                        if(jobInterceptionService.IsRequired(this.jobService.GetType().GetTypeInfo(), inputData))
+                        if (channelInterceptionService.IsRequired(this.channelService.GetType().GetTypeInfo(), inputData))
                         {
-                            queue.Enqueue(jobInterceptionService);
+                            queue.Enqueue(channelInterceptionService);
                         }
                     }
                 }

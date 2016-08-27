@@ -53,7 +53,7 @@
     <Compile Include="CetiData.cs" />
     <Compile Include="CetiWorkflowInfo.cs" />
     <Compile Include="CetiEntryPointAttribute.cs" />
-    <Compile Include="ServiceProviders\CetiJobInterceptionService.cs" />
+    <Compile Include="ServiceProviders\CetiChannelInterceptionService.cs" />
     <Compile Include="ServiceProviders\CetiTaskInterceptionService.cs" />
     <Compile Include="Support\CetiGlobalDataCollection.cs" />
     <Compile Include="CetiInputData.cs" />
@@ -71,7 +71,7 @@
     <Compile Include="Configuration\CetiGlobalDataElement.cs" />
     <Compile Include="Configuration\CetiGlobalDataElementCollection.cs" />
     <Compile Include="Exceptions\CetiException.cs" />
-    <Compile Include="Runners\CetiJobRunner.cs" />
+    <Compile Include="Runners\CetiChannelRunner.cs" />
     <Compile Include="Runners\CetiRunnerInfo.cs" />
     <Compile Include="CetiServiceProviderInfo.cs" />
     <Compile Include="CetiServiceProviderRepository.cs" />
@@ -84,7 +84,7 @@
     <Compile Include="Runners\CetiWorkflowRunner.cs" />
     <Compile Include="ServiceProviders\ICetiDataService.cs" />
     <Compile Include="ServiceProviders\ICetiInterceptionService.cs" />
-    <Compile Include="ServiceProviders\ICetiJobService.cs" />
+    <Compile Include="ServiceProviders\ICetiChannelService.cs" />
     <Compile Include="ServiceProviders\ICetiService.cs" />
     <Compile Include="ServiceProviders\ICetiExecutionService.cs" />
     <Compile Include="Support\CetiSupportExtensions.cs" />

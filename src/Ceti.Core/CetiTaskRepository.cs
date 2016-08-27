@@ -13,12 +13,12 @@ namespace Ceti.Core
         #region Protected Methods
 
         /// <summary>
-        /// Gets the job instance of the specified type.
+        /// Gets the channel instance of the specified type.
         /// </summary>
-        /// <returns>The instance of job runner which is used to run the job.</returns>
-        protected CetiJobRunner GetJob<TJob>() where TJob : class, ICetiJobService, new()
+        /// <returns>The instance of channel runner which is used to run the channel.</returns>
+        protected CetiChannelRunner GetChannel<TChannel>() where TChannel : class, ICetiChannelService, new()
         {
-            return new CetiJobRunner(CetiDriver.LocalDriver, new TJob());
+            return new CetiChannelRunner(CetiDriver.LocalDriver, new TChannel());
         }
 
         #endregion

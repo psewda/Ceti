@@ -16,9 +16,9 @@ namespace Ceti.Core.ServiceProviders
         Task,
 
         /// <summary>
-        /// The job type.
+        /// The channel type.
         /// </summary>
-        Job
+        Channel
 
         #endregion
     }

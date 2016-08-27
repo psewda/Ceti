@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace Ceti.Core.ServiceProviders
 {
-    public interface ICetiJobService : ICetiService    
+    public interface ICetiChannelService : ICetiService
     {
         #region Methods
 
         /// <summary>
-        /// Runs the job service.
+        /// Runs the channel service.
         /// </summary>
-        /// <param name="inputData">The data for the job service.</param>
-        /// <returns>The result of the job service.</returns>
+        /// <param name="inputData">The data for the channel service.</param>
+        /// <returns>The result of the channel service.</returns>
         CetiOutputData Run(CetiInputData inputData);
 
         #endregion
