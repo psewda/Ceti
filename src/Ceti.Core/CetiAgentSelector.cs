@@ -23,7 +23,7 @@ namespace Ceti.Core
         /// Initializes the class with the specified parameters.
         /// </summary>
         /// <param name="taskAgent">The task agent delegate.</param>
-        public CetiAgentSelector(Func<CetiTaskRunnerInfo, CetiAgentSelector> taskAgent)
+        public CetiAgentSelector(Func<CetiAgentSelector> taskAgent)
         {
             this.NextAgent = taskAgent;
         }
@@ -35,7 +35,7 @@ namespace Ceti.Core
         /// <summary>
         /// Gets next task agent.
         /// </summary>
-        public Func<CetiTaskRunnerInfo, CetiAgentSelector> NextAgent { get; private set; }
+        public Func<CetiAgentSelector> NextAgent { get; private set; }
 
         #endregion
     }

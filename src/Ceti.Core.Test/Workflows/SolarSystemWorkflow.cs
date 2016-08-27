@@ -19,12 +19,12 @@ namespace Ceti.Core.Test.Workflows
         }
 
         [CetiEntryPoint]
-        public CetiAgentSelector ProcessEarthComponent(CetiTaskRunnerInfo runInfo)
+        public CetiAgentSelector ProcessEarthComponent()
         {
             return null;
         }
 
-        public CetiAgentSelector ProcessMarsComponent(CetiTaskRunnerInfo runInfo)
+        public CetiAgentSelector ProcessMarsComponent()
         {
             return null;
         }

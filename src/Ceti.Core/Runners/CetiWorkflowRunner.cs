@@ -140,7 +140,7 @@ namespace Ceti.Core.Runners
         /// <param name="agent">The agent to be invoked.</param>
         /// <param name="isEntryPoint">The boolean flag for entry point agent.</param>
         /// <returns>The agent selector pointing to next agent.</returns>
-        private CetiAgentSelector invokeAgent(Func<CetiTaskRunnerInfo, CetiAgentSelector> agent, bool isEntryPoint)
+        private CetiAgentSelector invokeAgent(Func<CetiAgentSelector> agent, bool isEntryPoint)
         {
             // Create agent info instance
             var agentInfo = new CetiAgentInfo(agent.Method, isEntryPoint);
@@ -150,7 +150,7 @@ namespace Ceti.Core.Runners
             this.InvokeOnExecution(this.Driver.ExecutionContext);
 
             // Invoke the agent method
-            var selector = agent.Invoke(new CetiTaskRunnerInfo(this.Driver));
+            var selector = agent.Invoke();
 
             // Invoke 'OnExecution' method of execution service providers on agent end
             this.setContext(this.Driver.ExecutionContext, agentInfo, CetiExecutionStage.AgentEnd);
@@ -181,7 +181,7 @@ namespace Ceti.Core.Runners
         /// </summary>
         /// <param name="workflow">The workflow having agents.</param>
         /// <returns>The entry point agent delegate.</returns>
-        private Func<CetiTaskRunnerInfo, CetiAgentSelector> getEntryPointAgent(CetiWorkflow workflow)
+        private Func<CetiAgentSelector> getEntryPointAgent(CetiWorkflow workflow)
         {
             // Check the method is marked with entry point attribute
             Func<MethodInfo, bool> isEntryPoint = (mi) =>
@@ -192,14 +192,11 @@ namespace Ceti.Core.Runners
             // Check the method has valid signature
             Func<MethodInfo, bool> isSignValid = (mi) =>
             {
-                if (mi.GetParameters().Length == 1)
+                if (mi.GetParameters().Length == 0)
                 {
-                    if (mi.GetParameters()[0].ParameterType == typeof(CetiTaskRunnerInfo))
+                    if (mi.ReturnType == typeof(CetiAgentSelector))
                     {
-                        if (mi.ReturnType == typeof(CetiAgentSelector))
-                        {
-                            return true;
-                        }
+                        return true;
                     }
                 }
                 return false;
@@ -216,8 +213,8 @@ namespace Ceti.Core.Runners
             if (entryPointMethods.Count == 1)
             {
                 // Create agent delegate from the method
-                var agentDelegate = entryPointMethods[0].CreateDelegate(typeof(Func<CetiTaskRunnerInfo, CetiAgentSelector>), workflow);
-                return (Func<CetiTaskRunnerInfo, CetiAgentSelector>)agentDelegate;
+                var agentDelegate = entryPointMethods[0].CreateDelegate(typeof(Func<CetiAgentSelector>), workflow);
+                return (Func<CetiAgentSelector>)agentDelegate;
             }
             else
             {

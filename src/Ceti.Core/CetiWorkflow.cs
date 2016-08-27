@@ -100,6 +100,16 @@ namespace Ceti.Core
         #region Protected Methods
 
         /// <summary>
+        /// Gets the specified task to run.
+        /// </summary>
+        /// <param name="task">The task to run.</param>
+        /// <returns>The task runner to run the task.</returns>
+        public CetiTaskRunner GetTask(Func<CetiInputData, CetiOutputData> task)
+        {
+            return new CetiTaskRunner(this.Driver, task);
+        }
+
+        /// <summary>
         /// Gets the channel instance of the specified type.
         /// </summary>
         /// <returns>The instance of channel runner which is used to run the channel.</returns>
